@@ -1,3 +1,12 @@
+## PiCamera2 instructions
+
+Those are the instructions to experiment with picamera2 with the file example_picamera2.
+
+The file example.py uses picamera with the old stack.
+To use the old stack please run
+
+    sudo raspi-config 
+
 ### Deps installation
 
 This is a simplified and corrected version of the documentation
@@ -41,7 +50,7 @@ available at https://github.com/raspberrypi/picamera2
 
     cd $HOME/dev
     sudo pip3 install pyopengl piexif
-    sudo apt install -y python3-pyqt5
+    sudo apt install -y python3-pyqt5 python3-pil
     git clone https://github.com/raspberrypi/picamera2.git
 
     sudo apt install -y python3-opencv

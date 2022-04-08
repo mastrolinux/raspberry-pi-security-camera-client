@@ -7,6 +7,9 @@ To use the old stack please run
 
     sudo raspi-config 
 
+And then selecting -> Interface Options -> Legacy Camera Support.
+Finally reboot your Raspberry Pi
+
 ### Deps installation
 
 This is a simplified and corrected version of the documentation

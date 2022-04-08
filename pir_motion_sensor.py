@@ -1,23 +1,17 @@
 from gpiozero import MotionSensor
-from picamera2.picamera2 import *
 from datetime import datetime
 from signal import pause
 
 pir = MotionSensor(17)
-camera = Picamera2()
-camera.start_preview(Preview.NULL)
-config = camera.preview_configuration()
-camera.configure(config)
+
+### I suggest it to tune it at about 7-10 seconds
+### The time potentiometer should be turned 
+### Counterclockwise at almost horizontally
+### https://learn.adafruit.com/pir-passive-infrared-proximity-motion-sensor/testing-a-pir
 
 def capture():
-    camera.start_preview()
-    camera.start()
     timestamp = datetime.now().isoformat()
     print('%s Detected movement' % timestamp)
-
-    metadata = camera.capture_file('/home/pi/%s.jpg' % timestamp)
-    print(metadata)
-    camera.stop()
 
 def not_moving():
     timestamp = datetime.now().isoformat()

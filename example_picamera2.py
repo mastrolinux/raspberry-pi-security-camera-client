@@ -6,11 +6,10 @@ from signal import pause
 pir = MotionSensor(17)
 camera = Picamera2()
 camera.start_preview(Preview.NULL)
-config = camera.preview_configuration()
+config = camera.still_configuration()
 camera.configure(config)
 
 def capture():
-    camera.start_preview()
     camera.start()
     timestamp = datetime.now().isoformat()
     print('%s Detected movement' % timestamp)

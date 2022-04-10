@@ -8,7 +8,7 @@ camera = PiCamera()
 
 def capture():
     timestamp = datetime.now().isoformat()
-     print('%s Detected movement' % timestamp)
+    print('%s Detected movement' % timestamp)
     camera.capture('/home/pi/%s.jpg' % timestamp)
 
 def not_moving():

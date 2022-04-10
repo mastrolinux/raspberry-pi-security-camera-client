@@ -1,16 +1,14 @@
 ## PiCamera2 instructions
+Those are the instructions to experiment with picamera2 with the file `example_picamera2.py`.
 
-Those are the instructions to experiment with picamera2 with the file example_picamera2.
+**NOTE**
+The only file requiring the old stack of PiCamera is `example.py`.
+To use the old stack please run `sudo raspi-config`, and enable it selecting "Interface Options -> Legacy Camera Support".
+Finally reboot your Raspberry Pi.
 
-The file example.py uses picamera with the old stack.
-To use the old stack please run
+### Deps installation for PiCamera2
 
-    sudo raspi-config 
-
-And then selecting -> Interface Options -> Legacy Camera Support.
-Finally reboot your Raspberry Pi
-
-### Deps installation
+To use PiCamera2 you obviously have to disable the "Legacy Camera Support".
 
 This is a simplified and corrected version of the documentation
 available at https://github.com/raspberrypi/picamera2

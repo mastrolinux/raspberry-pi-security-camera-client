@@ -1,7 +1,8 @@
 import requests
 
 url = 'https://camera-server.onrender.com/upload'
-file = {'media': open('/tmp/test.jpg', 'rb')}
-resp = requests.post(url, files=files)
+files = {'file': open('/tmp/2022-04-10T20:57:06.706411.jpg', 'rb')}
+r = requests.post(url, files=files)
 
-print (resp)
+print (r.json())
+r.raise_for_status()

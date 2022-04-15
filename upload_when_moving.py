@@ -3,6 +3,7 @@ from picamera2.picamera2 import *
 from datetime import datetime
 from signal import pause
 import requests
+import os
 
 pir = MotionSensor(17)
 camera = Picamera2()
@@ -13,6 +14,7 @@ camera.configure(config)
 def moving():
     file_path = capture()
     upload_picture(file_path)
+    cleanup(file_path)
 
 def not_moving():
     timestamp = datetime.now().isoformat()
@@ -35,6 +37,11 @@ def upload_picture(file_path, url = 'https://camera-server.onrender.com/upload')
     r = requests.post(url, files=files)
     print (r.json())
     r.raise_for_status()
+
+def cleanup(file_path):
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        print ('Removed %s' % file_path)
 
 pir.when_motion = moving
 pir.when_no_motion = not_moving

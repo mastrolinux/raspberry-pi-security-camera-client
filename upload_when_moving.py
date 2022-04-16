@@ -3,24 +3,43 @@ from picamera2.picamera2 import *
 from datetime import datetime
 from signal import pause
 import requests
+from requests.auth import HTTPBasicAuth
 import os
+from dotenv import load_dotenv
+from urllib.parse import urljoin
+import json
 
-pir = MotionSensor(17)
-camera = Picamera2()
-camera.start_preview(Preview.NULL)
-config = camera.still_configuration()
-camera.configure(config)
 
-def moving():
-    file_path = capture()
-    upload_picture(file_path)
-    cleanup(file_path)
+load_dotenv()
+settings = {}
+settings['PIR_GPIO'] = int(os.getenv('PIR_GPIO', 17))
+settings['SERVER'] = { 
+    'user': os.getenv('USERNAME'), 
+    'password': os.getenv('PASSWORD'),
+    'base_url': os.getenv('API_SERVER')
+    }
+
+def setup_camera():
+    camera = Picamera2()
+    camera.start_preview(Preview.NULL)
+    config = camera.still_configuration()
+    camera.configure(config)
+    return camera
+
+
+def picture_when_motion(pir, camera, server_settings):
+    if camera:
+        file_path = capture(camera)
+        uploaded = upload_picture(file_path, server_settings)
+        if uploaded:
+            cleanup(file_path)
+    return lambda: print()
 
 def not_moving():
     timestamp = datetime.now().isoformat()
     print('%s All clear' % timestamp)
 
-def capture():
+def capture(camera):
     camera.start()
     timestamp = datetime.now().isoformat()
     print('%s Detected movement' % timestamp)
@@ -31,19 +50,35 @@ def capture():
     camera.stop()
     return file_path
 
-def upload_picture(file_path, url = 'https://camera-server.onrender.com/upload'):
+def upload_picture(file_path, server_settings):
+    if server_settings.get('base_url'):
+        url = urljoin(server_settings.get('base_url'), 'upload')
+    if server_settings.get('user') and server_settings.get('password'):
+        user = server_settings.get('user')
+        password = server_settings.get('password')
+
     files = {'file': open(file_path, 'rb')}
     print('Uploading file %s to URL: %s' %(file_path, url))
-    r = requests.post(url, files=files)
-    print (r.json())
-    r.raise_for_status()
+    r = requests.post(url, files=files, auth=HTTPBasicAuth(user, password))
+    image_path = r.json().get('path')
+    if not image_path or not r.ok:
+        print('Error uploading image')
+        return False
+    print('Image available at: {}'.format(image_path))
+    return True
+    
 
 def cleanup(file_path):
     if os.path.exists(file_path):
-        os.remove(file_path)
+        # os.remove(file_path)
         print ('Removed %s' % file_path)
 
-pir.when_motion = moving
-pir.when_no_motion = not_moving
+def init(settings):
+    camera = setup_camera()
+    pir = MotionSensor(settings.get('PIR_GPIO'))
+    pir.when_motion = picture_when_motion(pir, camera, settings.get('SERVER'))
+    pir.when_no_motion = not_moving
+    pause()
 
-pause()
+if __name__ == '__main__':
+    init(settings)

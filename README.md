@@ -62,6 +62,11 @@ available at https://github.com/raspberrypi/picamera2
 
     source $HOME/.bashrc
 
-## Ensure all the deps for this project are installed
+### Ensure all the deps for this project are installed
 
     pip3 install -r requirements.txt
+
+
+### Running the script
+
+    python3 init.py

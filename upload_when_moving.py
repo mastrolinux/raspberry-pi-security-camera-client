@@ -19,6 +19,16 @@ settings['SERVER'] = {
     'base_url': os.getenv('API_SERVER')
     }
 
+settings['IMG_PATH'] = os.getenv('IMG_PATH', 'img')
+
+def setup_path(path):
+    try:
+        os.mkdir(path)
+        print("Directory ", path, " Created ") 
+    except FileExistsError:
+        print("Directory ", path, " already exists")
+
+
 def setup_camera():
     camera = Picamera2()
     camera.start_preview(Preview.NULL)
@@ -27,9 +37,10 @@ def setup_camera():
     return camera
 
 
-def picture_when_motion(pir, camera, server_settings):
+def picture_when_motion(pir, camera, settings):
     if camera:
-        file_path = capture(camera)
+        file_path = capture(camera, settings.get('IMG_PATH'))
+        server_settings = settings.get('SERVER')
         uploaded = upload_picture(file_path, server_settings)
         if uploaded:
             cleanup(file_path)
@@ -39,12 +50,12 @@ def not_moving():
     timestamp = datetime.now().isoformat()
     print('%s All clear' % timestamp)
 
-def capture(camera):
+def capture(camera, path='/home/pi/'):
     camera.start()
-    timestamp = datetime.now().isoformat()
+    timestamp = datetime.now().isoformat(timespec='seconds')
     print('%s Detected movement' % timestamp)
 
-    file_path = '/home/pi/%s.jpg' % timestamp
+    file_path = os.path.join(path, '%s.jpg' % timestamp)
     metadata = camera.capture_file(file_path)
     print(metadata)
     camera.stop()
@@ -70,13 +81,14 @@ def upload_picture(file_path, server_settings):
 
 def cleanup(file_path):
     if os.path.exists(file_path):
-        # os.remove(file_path)
+        os.remove(file_path)
         print ('Removed %s' % file_path)
 
 def init(settings):
+    setup_path(settings.get('IMG_PATH'))
     camera = setup_camera()
     pir = MotionSensor(settings.get('PIR_GPIO'))
-    pir.when_motion = picture_when_motion(pir, camera, settings.get('SERVER'))
+    pir.when_motion = picture_when_motion(pir, camera, settings)
     pir.when_no_motion = not_moving
     pause()
 

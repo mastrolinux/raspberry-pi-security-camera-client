@@ -1,7 +1,8 @@
 ## PiCamera2 instructions
-Those are the instructions to experiment with picamera2 with the file `example_picamera2.py`.
+Those are the instructions to experiment with picamera2 with the file `main.py`.
 
 **NOTE**
+If you want to use the old stack, you have to adapt this code.
 The only file requiring the old stack of PiCamera is `example.py`.
 To use the old stack please run `sudo raspi-config`, and enable it selecting "Interface Options -> Legacy Camera Support".
 Finally reboot your Raspberry Pi.
@@ -60,3 +61,7 @@ available at https://github.com/raspberrypi/picamera2
     echo export PYTHONPATH=$HOME/dev/picamera2:$HOME/dev/libcamera/build/src/py:$HOME/dev/kmsxx/build/py:$HOME/dev/python-v4l2 >> ~/.bashrc
 
     source $HOME/.bashrc
+
+## Ensure all the deps for this project are installed
+
+    pip3 install -r requirements.txt

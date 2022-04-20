@@ -2,3 +2,4 @@ PIR_GPIO=17
 USERNAME='admin'
 PASSWORD='change-me-with-a-real-password-please'
 API_SERVER='https://your-api-address-example.com/'
+IMG_PATH='img'

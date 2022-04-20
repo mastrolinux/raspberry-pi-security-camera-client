@@ -67,6 +67,13 @@ available at https://github.com/raspberrypi/picamera2
     pip3 install -r requirements.txt
 
 
+### Copy the env variables in your own file
+
+To use your own settings, you can make changes to the .env file, an example file is present as env-example.
+Copy it over and change it accordingly
+
+    cp env-example .env
+
 ### Running the script
 
     python3 init.py

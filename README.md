@@ -1,4 +1,18 @@
-## PiCamera2 instructions
+## Raspberry Pi Security Camera Client With Picamera2 Support
+
+This application is intended to be a fully fledged example of an IoT application.
+The app is composed of 2 different components:
+
+* the client [Raspberry Pi Camera Client](https://github.com/mastrolinux/raspberry-pi-security-camera-client)
+
+* the server  [Raspberry Pi Camera Server Repo](https://github.com/mastrolinux/raspberry-pi-security-camera-server)
+
+The client (a Raspberry Pi with a motion (PIR) sensor and the Raspberry Pi Camera Module 2),
+takes a picture with the camera every time a movement is detected by the PIR sensor.
+Then it immediately uploads the image on the server, and if the upload is successful,
+it remove the local image to avoid filling the disk.
+
+### PiCamera2 installation instructions
 Those are the instructions to experiment with picamera2 with the file `main.py`.
 
 **NOTE**

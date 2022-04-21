@@ -74,7 +74,10 @@ def upload_picture(file_path, server_settings):
 
     files = {'file': open(file_path, 'rb')}
     print('Uploading file %s to URL: %s' %(file_path, url))
-    r = requests.post(url, files=files, auth=HTTPBasicAuth(user, password))
+    try:
+        r = requests.post(url, files=files, auth=HTTPBasicAuth(user, password))
+    except e:
+        print(e)
     image_path = r.json().get('path')
     if not image_path or not r.ok:
         print('Error uploading image')

@@ -1,0 +1,11 @@
+[Unit]
+Description=Raspberry Pi Security Camera Client
+After=multi-user.target
+[Service]
+Type=simple
+Restart=always
+WorkingDirectory=/home/pi/raspberry-pi-security-camera-client
+Environment=PYTHONPATH=/home/pi/dev/picamera2:/home/pi/dev/libcamera/build/src/py:/home/pi/dev/kmsxx/build/py:/home/pi/dev/python-v4l2
+ExecStart=/usr/bin/python3 /home/pi/raspberry-pi-security-camera-client/main.py
+[Install]
+WantedBy=multi-user.target

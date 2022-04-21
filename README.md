@@ -12,6 +12,11 @@ takes a picture with the camera every time a movement is detected by the PIR sen
 Then it immediately uploads the image on the server, and if the upload is successful,
 it remove the local image to avoid filling the disk.
 
+## Clone this repo and put it in a project dir (please note the `project` name is significant)
+
+    cd /home/pi/
+    git clone https://github.com/mastrolinux/raspberry-pi-security-camera-client.git 
+
 ### PiCamera2 installation instructions
 Those are the instructions to experiment with picamera2 with the file `main.py`.
 
@@ -78,6 +83,7 @@ available at https://github.com/raspberrypi/picamera2
 
 ### Ensure all the deps for this project are installed
 
+    sudo apt install python3-dotenv
     pip3 install -r requirements.txt
 
 
@@ -91,3 +97,12 @@ Copy it over and change it accordingly
 ### Running the script
 
     python3 init.py
+
+
+### Running the script every time Raspberry Pi boot
+
+    sudo cp picamera-client.service /etc/systemd/system/
+    sudo systemctl daemon-reload
+    sudo systemctl enable picamera-client.service
+    sudo systemctl start picamera-client.service
+    sudo systemctl status picamera-client.service
